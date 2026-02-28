@@ -1,0 +1,100 @@
+from reportlab.lib.pagesizes import letter
+from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer
+from reportlab.lib.styles import getSampleStyleSheet
+
+styles = getSampleStyleSheet()
+doc = SimpleDocTemplate("NetworkSS.pdf", pagesize=letter)
+story = []
+print("Generating PDF...")
+
+def h(text):
+    story.append(Paragraph(text, styles['Heading1']))
+    story.append(Spacer(1, 12))
+
+def sub(text):
+    story.append(Paragraph(text, styles['Heading2']))
+    story.append(Spacer(1, 8))
+
+# Compose report content
+h("1. Introduction")
+story.append(Paragraph("<b>Problem description:</b> Many users and administrators need a straightforward way to perform network security scans—port enumeration, device discovery, and IP geolocation—without installing heavy tools. This project provides a web-based scanner that can run simulated scans in the browser or leverage a backend service to perform real scans, making network auditing accessible.", styles['BodyText']))
+story.append(Spacer(1, 6))
+story.append(Paragraph("<b>Motivation:</b> Traditional network scanning tools are command-line oriented and not mobile-friendly. A modern web interface simplifies usage and can be integrated into workflows (e.g., saving history). Mobile Driven Design ensures usability on smartphones and tablets.", styles['BodyText']))
+story.append(Spacer(1, 12))
+story.append(Paragraph("<b>Project objectives:</b>", styles['BodyText']))
+story.append(Paragraph("• Build a responsive, mobile-first frontend with CRUD capabilities for scan records.", styles['Bullet']))
+story.append(Paragraph("• Develop a backend API to perform scans, handle geolocation, and interact with a database.", styles['Bullet']))
+story.append(Paragraph("• Integrate with a database (Supabase/PostgreSQL) to store user accounts and scan results.", styles['Bullet']))
+story.append(Spacer(1, 12))
+
+h("2. System Requirements")
+sub("Functional requirements")
+story.append(Paragraph("1. CRUD operations: users can create scans, read past results, update settings, and delete records.", styles['BodyText']))
+story.append(Paragraph("2. Backend API: RESTful endpoints for geolocation, port scan, network discovery.", styles['BodyText']))
+story.append(Paragraph("3. Database interaction: store scan history tied to authenticated users.", styles['BodyText']))
+story.append(Paragraph("4. Responsive mobile-first design: UI adapts to small screens.", styles['BodyText']))
+story.append(Spacer(1, 12))
+sub("Non-functional requirements")
+story.append(Paragraph("• Mobile-first design ensuring usability on phones and tablets.", styles['BodyText']))
+story.append(Paragraph("• Clean UI based on shadcn components and neon theme.", styles['BodyText']))
+story.append(Paragraph("• Organized codebase with TypeScript, React, and FastAPI; readable and modular.", styles['BodyText']))
+story.append(Paragraph("• Basic validation (IP format) and error handling on frontend and backend.", styles['BodyText']))
+story.append(Spacer(1, 12))
+
+h("3. System Architecture")
+story.append(Paragraph("Overall the system uses a client-server model: React frontend communicates via HTTP to a FastAPI backend which in turn interacts with a PostgreSQL database provided by Supabase.", styles['BodyText']))
+story.append(Spacer(1, 6))
+sub("Client-server architecture diagram")
+story.append(Paragraph("(See repository diagrams or draw using external tools; depicted here abstractly.)", styles['BodyText']))
+story.append(Spacer(1, 6))
+sub("Database schema (ERD)")
+story.append(Paragraph("Single table 'scans' linked to auth.users; stores JSONB fields for geolocation, ports, and devices.", styles['BodyText']))
+story.append(Spacer(1, 6))
+sub("Authentication mechanism")
+story.append(Paragraph("Auth handled by Supabase's built-in auth (email/password). Frontend uses context provider to obtain current user.", styles['BodyText']))
+story.append(Spacer(1, 6))
+sub("Security measures used")
+story.append(Paragraph("CORS middleware on backend, environment variables for secrets, service-role keys kept server-side. Input validation at both ends.", styles['BodyText']))
+story.append(Spacer(1, 12))
+
+h("4. Implementation Details")
+sub("Technologies used")
+story.append(Paragraph("Frontend: React, Vite, TypeScript, shadcn-ui, Tailwind CSS." , styles['BodyText']))
+story.append(Paragraph("Backend: Python 3.13, FastAPI, python-nmap, scapy, uvicorn." , styles['BodyText']))
+story.append(Paragraph("Database: Supabase (PostgreSQL) with JSONB columns." , styles['BodyText']))
+story.append(Paragraph("Testing: Vitest for frontend." , styles['BodyText']))
+story.append(Spacer(1, 6))
+sub("Frontend implementation")
+story.append(Paragraph("ScanPage component orchestrates user input, progress bar, and result display. scanner.ts provides helpers that call backend endpoints or simulate data.", styles['BodyText']))
+story.append(Spacer(1, 6))
+sub("Backend implementation")
+story.append(Paragraph("Single-file FastAPI app defines endpoints for /health, /geolocation, /scan/port, /scan/network with fallback logic when tools are unavailable.", styles['BodyText']))
+story.append(Spacer(1, 6))
+sub("Database design")
+story.append(Paragraph("Scans table schema described earlier; migrations included in supabase folder.", styles['BodyText']))
+story.append(Spacer(1, 6))
+sub("Challenges faced")
+story.append(Paragraph("Adapting simulated frontend logic to call backend, ensuring environment variable configuration, and handling absent scanning utilities gracefully.", styles['BodyText']))
+story.append(Spacer(1, 6))
+sub("Assumptions made")
+story.append(Paragraph("Users have access to a Supabase project; backend may not always have nmap/scapy installed so simulation required.", styles['BodyText']))
+story.append(Spacer(1, 12))
+
+h("5. Security Considerations")
+story.append(Paragraph("Authentication is delegated to Supabase; passwords are stored securely by that service. The backend does not handle credentials directly.", styles['BodyText']))
+story.append(Paragraph("Sensitive keys (service-role, db URLs) are kept out of frontend and stored in environment variables.", styles['BodyText']))
+story.append(Paragraph("All API routes validate input; output sanitized. CORS restricts origins.", styles['BodyText']))
+story.append(Paragraph("Access control enforced by frontend—only logged-in users can save scans.", styles['BodyText']))
+story.append(Spacer(1, 12))
+
+h("6. Testing & Results")
+story.append(Paragraph("Screenshots available in repo. Major features: scanning workflow, history page, login/register—all functioning. Incomplete features: none significant; backend simulation may not match real network without tools installed.", styles['BodyText']))
+story.append(Spacer(1, 12))
+
+h("7. Future Work")
+story.append(Paragraph("Possible improvements include deploying full backend to cloud, adding real-time scan updates, supporting authenticated API access, and scaling the database. Mobile app wrapper using React Native could enhance portability.", styles['BodyText']))
+story.append(Spacer(1, 12))
+
+# build document
+print("Building PDF as NetworkSS.pdf")
+doc.build(story)
