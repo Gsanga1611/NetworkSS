@@ -124,3 +124,22 @@ The scanner helpers in `src/lib/scanner.ts` now forward geolocation, port scans 
 ---
 
 
+
+## Deploy to GitHub Pages
+
+This repository is configured to auto-deploy on every push to `main` using `.github/workflows/deploy.yml`.
+
+1. Commit and push your changes:
+
+```bash
+git add .github/workflows/deploy.yml vite.config.ts src/App.tsx
+git commit -m "Configure GitHub Pages deployment"
+git push origin main
+```
+
+2. Verify repository settings in GitHub:
+- `Settings -> Actions -> General -> Workflow permissions`: **Read and write permissions**
+- `Settings -> Pages`: Source **Deploy from branch**, branch **gh-pages**, folder **/(root)**
+
+3. Open the site:
+- `https://gsanga1611.github.io/NetworkSS/`
