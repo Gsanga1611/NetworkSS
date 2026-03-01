@@ -2,7 +2,7 @@
 
 ## Project info
 
-**URL**: [[http://localhost:8080/](https://gsanga1611.github.io/NetworkSS/)]
+**URL**: [https://gsanga1611.github.io/NetworkSS]
 
 ## How can I edit this code?
 
