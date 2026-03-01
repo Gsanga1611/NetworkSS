@@ -2,7 +2,7 @@
 
 ## Project info
 
-**URL**: https://lovable.dev/projects/NetworkSS
+**URL**: [http://localhost:8080/]
 
 ## How can I edit this code?
 
